@@ -6,5 +6,5 @@ category: 第三方精华文章
 ---
 
 ### 设计模式
-* [csdn规速](https://blog.csdn.net/hguisu/article/details/7505909)
+* [csdn规速](https://blog.csdn.net/hguisu/article/details/7533759)
   > 该作者文章的写作方式,值得学习
