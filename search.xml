@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>博客使用方式</title>
+    <url>/2019/03/31/blogManual/</url>
+    <content><![CDATA[<h3 id="Github-上-Hexo-项目源码以及发布版管理"><a href="#Github-上-Hexo-项目源码以及发布版管理" class="headerlink" title="Github 上 Hexo 项目源码以及发布版管理"></a>Github 上 Hexo 项目源码以及发布版管理</h3><ul>
+<li><a href="https://shiningdan.github.io/2017/01/10/Github%E4%B8%8AHexo%E9%A1%B9%E7%9B%AE%E6%BA%90%E7%A0%81%E4%BB%A5%E5%8F%8A%E5%8F%91%E5%B8%83%E7%89%88%E7%AE%A1%E7%90%86/" target="_blank" rel="noopener">分享链接1</a></li>
+<li><a href="https://www.cnblogs.com/ld1024/p/5913169.html" target="_blank" rel="noopener">分享链接2</a></li>
+</ul>
+<h3 id="常用指令"><a href="#常用指令" class="headerlink" title="常用指令"></a>常用指令</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">hexo g // 生成静态网页</span><br><span class="line">hexo s [-p port] // 以本地预览效果</span><br><span class="line">hexo d // 上传到 github</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>博客操作</category>
+      </categories>
+      <tags>
+        <tag>blogManual</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用PHPCompatibility+PHP_CodeSniffer进行PHP版本的兼容性检查</title>
+    <url>/2020/12/18/php_compatible/</url>
+    <content><![CDATA[<ol>
+<li><p>编写composer.json </p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;require-dev&quot;: &#123;</span><br><span class="line">        &quot;squizlabs/php_codesniffer&quot;: &quot;3.*&quot;,</span><br><span class="line">        &quot;phpcompatibility/php-compatibility&quot;: &quot;*&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;prefer-stable&quot; : true,</span><br><span class="line">    &quot;scripts&quot;: &#123;</span><br><span class="line">        &quot;post-install-cmd&quot;: &quot;\&quot;vendor/bin/phpcs\&quot; --config-set installed_paths vendor/phpcompatibility/php-compatibility&quot;,</span><br><span class="line">        &quot;post-update-cmd&quot; : &quot;\&quot;vendor/bin/phpcs\&quot; --config-set installed_paths vendor/phpcompatibility/php-compatibility&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>composer update</p>
+</li>
+<li>./vendor/bin/phpcs –standard=PHPCompatibility –runtime-set testVersion PHP版本 path –extensions=php –report=summary –report-file=/path</li>
+</ol>
+]]></content>
+      <categories>
+        <category>php</category>
+      </categories>
+      <tags>
+        <tag>php</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>有用的文章(长期更新)</title>
+    <url>/2019/03/31/userfulPage/</url>
+    <content><![CDATA[<h3 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h3><ul>
+<li><a href="https://blog.csdn.net/hguisu/article/details/7533759" target="_blank" rel="noopener">csdn规速</a><blockquote>
+<p>该作者文章的写作方式,值得学习</p>
+</blockquote>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>第三方精华文章</category>
+      </categories>
+      <tags>
+        <tag>usefulPage</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>vagrant安装与使用</title>
+    <url>/2018/05/29/vagrant/</url>
+    <content><![CDATA[<h2 id="推荐使用docker-此种方式已不适合时代"><a href="#推荐使用docker-此种方式已不适合时代" class="headerlink" title="推荐使用docker,此种方式已不适合时代"></a>推荐使用docker,此种方式已不适合时代</h2><p>网上充斥着vagrant安装教程，个人感觉比较简陋，在使用过程中，我把产生的问题，梳理一遍。</p>
+<blockquote>
+<p>注：以下操作都是在windows下，其他系统不做参考</p>
+</blockquote>
+<h3 id="1-安装virtualbox"><a href="#1-安装virtualbox" class="headerlink" title="1. 安装virtualbox"></a>1. <em>安装virtualbox</em></h3><blockquote>
+<p>安装完毕后，<code>最好</code>修改虚拟电脑位置,vagrant 默认安装在C盘，一般来说C盘都比较小，放在更大空间的盘符里比较合适<br>操作：打开管理器 =&gt; 管理 =&gt; 全局设定 =&gt;常规 =&gt; 默认虚拟电脑位置(假设D:\virtualbox_vms)</p>
+</blockquote>
+<h3 id="2-安装vagrant"><a href="#2-安装vagrant" class="headerlink" title="2. 安装vagrant"></a>2. <em>安装vagrant</em></h3><blockquote>
+<p>正常来说，vagrant命令会自动加载到环境变量里面，若没有，则重新安装，或者参考网上系统变量加载方式</p>
+</blockquote>
+<h3 id="3-配置vagrant"><a href="#3-配置vagrant" class="headerlink" title="3. 配置vagrant"></a>3. 配置vagrant</h3><blockquote>
+<ol>
+<li>项目主路径  D:\vagrant_project</li>
+<li>虚拟电脑路径 D:\virtualbox_vms</li>
+<li>从<a href="http://www.vagrantbox.es/下载合适的box,这里以centos7为例,放在D:\vagrant_project下" target="_blank" rel="noopener">http://www.vagrantbox.es/下载合适的box,这里以centos7为例,放在D:\vagrant_project下</a></li>
+</ol>
+</blockquote>
+<h6 id="3-1-快捷键win-R-输入cmd后切换到-D-vagrant-project-test01下"><a href="#3-1-快捷键win-R-输入cmd后切换到-D-vagrant-project-test01下" class="headerlink" title="3.1 快捷键win+R,输入cmd后切换到 D:\vagrant_project\test01下"></a>3.1 快捷键<code>win+R</code>,输入<code>cmd</code>后切换到 <strong>D:\vagrant_project\test01</strong>下</h6><blockquote>
+<p>test01是项目名</p>
+</blockquote>
+<h6 id="3-2-vagrant-box-add-test01-D-vagrant-project-centos-7-0-x86-64-box"><a href="#3-2-vagrant-box-add-test01-D-vagrant-project-centos-7-0-x86-64-box" class="headerlink" title="3.2 vagrant box add test01 D:\vagrant_project\centos-7.0-x86_64.box"></a>3.2 vagrant box add test01 D:\vagrant_project\centos-7.0-x86_64.box</h6><h6 id="3-3-vagrant-init-初始化"><a href="#3-3-vagrant-init-初始化" class="headerlink" title="3.3 vagrant init  // 初始化"></a>3.3 vagrant init  <strong>// 初始化</strong></h6><blockquote>
+<p>此时产生Vagrantfile，这里面可以修改参数，比如改变内存大小，通过ip访问等等</p>
+</blockquote>
+<h6 id="3-4-vagrant-up-启动"><a href="#3-4-vagrant-up-启动" class="headerlink" title="3.4 vagrant up // 启动"></a>3.4 vagrant up <strong>// 启动</strong></h6><h6 id="3-5-vagrant-ssh"><a href="#3-5-vagrant-ssh" class="headerlink" title="3.5 vagrant ssh"></a>3.5 vagrant ssh</h6><blockquote>
+<p>或者3.3步之后修改Vagrantfile,配置ip，就可以通过第三方ssh软件登陆</p>
+</blockquote>
+<h6 id="3-6-vagrant-halt-关机"><a href="#3-6-vagrant-halt-关机" class="headerlink" title="3.6 vagrant halt   // 关机"></a>3.6 vagrant halt   <strong>// 关机</strong></h6><h6 id="3-7-其他命令，自行查找-eg-vagrant-reload-vagrant-box-list-等"><a href="#3-7-其他命令，自行查找-eg-vagrant-reload-vagrant-box-list-等" class="headerlink" title="3.7 其他命令，自行查找,eg:vagrant reload,vagrant box list 等"></a>3.7 <code>其他命令，自行查找</code>,eg:vagrant reload,vagrant box list 等</h6><h3 id="4-扩容box"><a href="#4-扩容box" class="headerlink" title="4. 扩容box"></a>4. <em>扩容box</em></h3><p>一般下载的box空间都不大，这个时候需要扩容</p>
+<blockquote>
+<p>参考:<br><a href="https://gist.github.com/christopher-hopper/9755310" target="_blank" rel="noopener">https://gist.github.com/christopher-hopper/9755310</a><br><a href="http://blog.csdn.net/zxjxingkong/article/details/62419379" target="_blank" rel="noopener">http://blog.csdn.net/zxjxingkong/article/details/62419379</a> (main)</p>
+</blockquote>
+<h3 id="5-打包"><a href="#5-打包" class="headerlink" title="5. 打包"></a>5. <em>打包</em></h3><h6 id="5-1-如果网络模式是-private-network-的话，在打包之前需要清除一下private-network的设置，避免不必要的错误"><a href="#5-1-如果网络模式是-private-network-的话，在打包之前需要清除一下private-network的设置，避免不必要的错误" class="headerlink" title="5.1 如果网络模式是 private_network 的话，在打包之前需要清除一下private_network的设置，避免不必要的错误"></a>5.1 如果网络模式是 private_network 的话，在打包之前需要清除一下private_network的设置，避免不必要的错误</h6><p>   rm -f /etc/udev/rule.d/70-persistent-net.rules</p>
+<h6 id="5-2-vagrant-package-–output-mycentos-box-–base-centos"><a href="#5-2-vagrant-package-–output-mycentos-box-–base-centos" class="headerlink" title="5.2 vagrant package –output mycentos.box –base centos"></a>5.2 vagrant package –output <code>mycentos.box</code> –base <code>centos</code></h6><blockquote>
+<p>centos根据具体名称</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>环境配置</category>
+      </categories>
+      <tags>
+        <tag>vagrant</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>php数组的一些应用</title>
+    <url>/2019/09/11/php_array/</url>
+    <content><![CDATA[<p>php 数组很好很强大，下面展示一些个人常用到的事例</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">$example = [</span><br><span class="line">    <span class="number">0</span> =&gt; [</span><br><span class="line">        <span class="string">'id'</span> =&gt; <span class="number">1</span>,</span><br><span class="line">        <span class="string">'name'</span> =&gt; <span class="string">'alpha'</span>,</span><br><span class="line">        <span class="string">'age'</span> =&gt; <span class="number">18</span>,</span><br><span class="line">    ],</span><br><span class="line">    <span class="number">1</span> =&gt; [</span><br><span class="line">        <span class="string">'id'</span> =&gt; <span class="number">22</span>,</span><br><span class="line">        <span class="string">'name'</span> =&gt; <span class="string">'berry'</span>,</span><br><span class="line">        <span class="string">'age'</span> =&gt; <span class="number">28</span>,</span><br><span class="line">    ],</span><br><span class="line">    <span class="number">2</span> =&gt; [</span><br><span class="line">        <span class="string">'id'</span> =&gt; <span class="number">33</span>,</span><br><span class="line">        <span class="string">'name'</span> =&gt; <span class="string">'cherry'</span>,</span><br><span class="line">        <span class="string">'age'</span> =&gt; <span class="number">38</span>,</span><br><span class="line">    ]</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+<h3 id="返回二维数组指定的列的集合"><a href="#返回二维数组指定的列的集合" class="headerlink" title="返回二维数组指定的列的集合"></a>返回二维数组指定的列的集合</h3><p><code>array_column($example, &#39;id&#39;)</code></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">Array</span></span><br><span class="line">(</span><br><span class="line">    [<span class="number">0</span>] =&gt; <span class="number">1</span></span><br><span class="line">    [<span class="number">1</span>] =&gt; <span class="number">22</span></span><br><span class="line">    [<span class="number">2</span>] =&gt; <span class="number">33</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h3 id="传递指定的两个字段，并按照指定的字段组成新的一维数组"><a href="#传递指定的两个字段，并按照指定的字段组成新的一维数组" class="headerlink" title="传递指定的两个字段，并按照指定的字段组成新的一维数组"></a>传递指定的两个字段，并按照指定的字段组成新的一维数组</h3><p><code>array_column($example, &#39;name&#39;, &#39;id&#39;);</code></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">Array</span></span><br><span class="line">(</span><br><span class="line">    [<span class="number">1</span>] =&gt; alpha</span><br><span class="line">    [<span class="number">22</span>] =&gt; berry</span><br><span class="line">    [<span class="number">33</span>] =&gt; cherry</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h3 id="二维数组，指定值作为key"><a href="#二维数组，指定值作为key" class="headerlink" title="二维数组，指定值作为key"></a>二维数组，指定值作为key</h3><p><code>array_column($example, null, &#39;id&#39;)</code><br><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">Array</span></span><br><span class="line">(</span><br><span class="line">    [<span class="number">1</span>] =&gt; <span class="keyword">Array</span></span><br><span class="line">        (</span><br><span class="line">            [id] =&gt; <span class="number">1</span></span><br><span class="line">            [name] =&gt; alpha</span><br><span class="line">            [age] =&gt; <span class="number">18</span></span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    [<span class="number">22</span>] =&gt; <span class="keyword">Array</span></span><br><span class="line">        (</span><br><span class="line">            [id] =&gt; <span class="number">22</span></span><br><span class="line">            [name] =&gt; berry</span><br><span class="line">            [age] =&gt; <span class="number">28</span></span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">    [<span class="number">33</span>] =&gt; <span class="keyword">Array</span></span><br><span class="line">        (</span><br><span class="line">            [id] =&gt; <span class="number">33</span></span><br><span class="line">            [name] =&gt; cherry</span><br><span class="line">            [age] =&gt; <span class="number">38</span></span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">)</span><br></pre></td></tr></table></figure></p>
+<h3 id="获取二维数组指定key的汇总"><a href="#获取二维数组指定key的汇总" class="headerlink" title="获取二维数组指定key的汇总"></a>获取二维数组指定key的汇总</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line">$sum = array_sum(array_map(<span class="function"><span class="keyword">function</span><span class="params">($val)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> $val[<span class="string">'age'</span>];</span><br><span class="line">&#125;, $example));</span><br><span class="line"><span class="keyword">echo</span> $sum; \\ <span class="number">84</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>php</category>
+      </categories>
+      <tags>
+        <tag>php数组</tag>
+      </tags>
+  </entry>
+</search>
