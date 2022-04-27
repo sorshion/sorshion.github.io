@@ -115,4 +115,20 @@
         <tag>vagrant</tag>
       </tags>
   </entry>
+  <entry>
+    <title>如何使用手机app进行pc登录</title>
+    <url>/2021/04/27/how_to_use_phone_login/</url>
+    <content><![CDATA[<p>提供一种通用的设计</p>
+<p>后端只需提供3个接口，分别是 getUuid,isLogin,loginByQrcode</p>
+<h2 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h2><p>pc端切换到二维码扫码界面时，请求getUuid接口, getUuid接口生成一个uuid,存入到redis中，可设置过期时间<br><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 伪代码</span></span><br><span class="line">$uuid = uniqid();</span><br><span class="line">redis-&gt;set($uuid, <span class="string">'login'</span>, <span class="number">60</span> * <span class="number">5</span>)</span><br></pre></td></tr></table></figure></p>
+<h2 id="第二步"><a href="#第二步" class="headerlink" title="第二步"></a>第二步</h2><p>PC前端一直轮询isLogin接口，isLogin接口判断uuid是否过期，判断是否uuid是否还未被二维码扫码，判断uuid的值是否已经跟token关联<br><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 伪代码</span></span><br><span class="line">$uuid = input(<span class="string">'uuid'</span>);</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">empty</span>($uuid)) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'参数错误'</span>;</span><br><span class="line">&#125;</span><br><span class="line">$token = redis-&gt;get($uuid);</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">empty</span>($token)) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'二维码超时'</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> ($token == <span class="string">'login'</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'手机还未扫码'</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> $token</span><br></pre></td></tr></table></figure></p>
+<h2 id="第三步"><a href="#第三步" class="headerlink" title="第三步"></a>第三步</h2><p>手机端已登录情况下扫码，获取到二维码的信息,即uuid,然后通过loginByQrcode接口，把token跟uuid信息关联到redis中<br><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 伪代码</span></span><br><span class="line">$uuid = input(<span class="string">'uuid'</span>);</span><br><span class="line">$token = input(<span class="string">'token'</span>);</span><br><span class="line"></span><br><span class="line">$uuid = redis-&gt;has($uuid);</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">empty</span>($uuid)) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'二维码过期，请刷新页面'</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 获取用户信息</span></span><br><span class="line"></span><br><span class="line">redis-&gt;set($uuid, $token, <span class="number">60</span> * <span class="number">5</span>)</span><br></pre></td></tr></table></figure></p>
+]]></content>
+      <categories>
+        <category>业务方案</category>
+      </categories>
+      <tags>
+        <tag>login</tag>
+      </tags>
+  </entry>
 </search>
