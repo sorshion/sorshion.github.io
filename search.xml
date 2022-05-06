@@ -74,12 +74,12 @@
     <url>/2021/05/06/session&amp;token/</url>
     <content><![CDATA[<p><code>session</code> 和 <code>token</code> ,在我看来，没啥不同，都是一种客户端和服务端保持链接得一种解决方案，只不过 <code>session</code> 由服务器帮我解决好了，而 <code>token</code> 则需要自己来处理</p>
 <p><code>session</code> 更多的是，单机时代的一种解决方案，而 <code>token</code> 更适应现在的使用场景</p>
-<h2 id="session和cookie"><a href="#session和cookie" class="headerlink" title="session和cookie"></a>session和cookie</h2><p>一般来说 <code>cookie</code> 中会存有 <code>session_id</code>，如果禁止 <code>cookie</code> 可以在 <code>url</code> 链接中带有 <code>session_id</code></p>
+<h2 id="session和cookie"><a href="#session和cookie" class="headerlink" title="session和cookie"></a>session和cookie</h2><p>一般来说 浏览器中的 <code>cookie</code> 中会存有 <code>session_id</code>，如果禁止 <code>cookie</code> 使用，可以在 <code>url</code> 链接中带有 <code>session_id</code></p>
 <h2 id="session分布式解决方案"><a href="#session分布式解决方案" class="headerlink" title="session分布式解决方案"></a>session分布式解决方案</h2><p>一般来说 <code>session</code> 都是保存在一台服务器的文件目录上，为了达到分布式效果，有几种方案。</p>
 <ul>
 <li><code>session</code> 目录共享，<code>oss</code> 或者挂载</li>
 <li>现在的大部分php框架，都支持不同的 <code>session</code>驱动，可以把 <code>file</code> 驱动，替换成 <code>redis</code>, 这样子就可以支持分布式了</li>
-<li><code>session</code> 保存到 <code>mysql</code>中</li>
+<li><code>session</code> 保存到 <code>mysql</code> 中</li>
 </ul>
 <p>当然还有其他的方案，其中的效果和优缺点，只有实际使用才能真正知道了。</p>
 <h2 id="token的使用"><a href="#token的使用" class="headerlink" title="token的使用"></a>token的使用</h2><p>在 <code>restful</code>，前后端分离项目中，<code>token</code> 还是比较好用的，毕竟大部分的 <code>session</code>，还是依赖 <code>cookie</code>，而在app端没有 <code>cookie</code> 这个东西（存疑，毕竟我不了解app）， <code>token</code> 可以自定义的 <code>uuid</code>，也可以 <code>jwt</code>。</p>
