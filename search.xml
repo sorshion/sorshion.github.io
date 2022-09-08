@@ -35,16 +35,27 @@
       </tags>
   </entry>
   <entry>
+    <title>如何使用手机app进行pc登录</title>
+    <url>/2021/04/27/how_to_use_phone_login/</url>
+    <content><![CDATA[<p>提供一种通用的设计</p>
+<p>后端只需提供3个接口，分别是 getUuid,isLogin,loginByQrcode</p>
+<h2 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h2><p>pc端切换到二维码扫码界面时，请求getUuid接口, getUuid接口生成一个uuid,存入到redis中，可设置过期时间<br><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 伪代码</span></span><br><span class="line">$uuid = uniqid();</span><br><span class="line">redis-&gt;set($uuid, <span class="string">'login'</span>, <span class="number">60</span> * <span class="number">5</span>)</span><br></pre></td></tr></table></figure></p>
+<h2 id="第二步"><a href="#第二步" class="headerlink" title="第二步"></a>第二步</h2><p>PC前端一直轮询isLogin接口，isLogin接口判断uuid是否过期，判断是否uuid是否还未被二维码扫码，判断uuid的值是否已经跟token关联<br><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 伪代码</span></span><br><span class="line">$uuid = input(<span class="string">'uuid'</span>);</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">empty</span>($uuid)) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'参数错误'</span>;</span><br><span class="line">&#125;</span><br><span class="line">$token = redis-&gt;get($uuid);</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">empty</span>($token)) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'二维码超时'</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> ($token == <span class="string">'login'</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'手机还未扫码'</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> $token</span><br></pre></td></tr></table></figure></p>
+<h2 id="第三步"><a href="#第三步" class="headerlink" title="第三步"></a>第三步</h2><p>手机端已登录情况下扫码，获取到二维码的信息,即uuid,然后通过loginByQrcode接口，把token跟uuid信息关联到redis中<br><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 伪代码</span></span><br><span class="line">$uuid = input(<span class="string">'uuid'</span>);</span><br><span class="line">$token = input(<span class="string">'token'</span>);</span><br><span class="line"></span><br><span class="line">$uuid = redis-&gt;has($uuid);</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">empty</span>($uuid)) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'二维码过期，请刷新页面'</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 获取用户信息</span></span><br><span class="line"></span><br><span class="line">redis-&gt;set($uuid, $token, <span class="number">60</span> * <span class="number">5</span>)</span><br></pre></td></tr></table></figure></p>
+]]></content>
+      <categories>
+        <category>业务方案</category>
+      </categories>
+      <tags>
+        <tag>login</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>使用PHPCompatibility+PHP_CodeSniffer进行PHP版本的兼容性检查</title>
     <url>/2020/12/18/php_compatible/</url>
-    <content><![CDATA[<ol>
-<li><p>编写composer.json </p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;require-dev&quot;: &#123;</span><br><span class="line">        &quot;squizlabs/php_codesniffer&quot;: &quot;3.*&quot;,</span><br><span class="line">        &quot;phpcompatibility/php-compatibility&quot;: &quot;*&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;prefer-stable&quot; : true,</span><br><span class="line">    &quot;scripts&quot;: &#123;</span><br><span class="line">        &quot;post-install-cmd&quot;: &quot;\&quot;vendor/bin/phpcs\&quot; --config-set installed_paths vendor/phpcompatibility/php-compatibility&quot;,</span><br><span class="line">        &quot;post-update-cmd&quot; : &quot;\&quot;vendor/bin/phpcs\&quot; --config-set installed_paths vendor/phpcompatibility/php-compatibility&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>composer update</p>
-</li>
-<li>./vendor/bin/phpcs –standard=PHPCompatibility –runtime-set testVersion PHP版本 path –extensions=php –report=summary –report-file=/path</li>
-</ol>
+    <content><![CDATA[<h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><h2 id="编写composer-json"><a href="#编写composer-json" class="headerlink" title="编写composer.json"></a>编写composer.json</h2><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;require-dev&quot;: &#123;</span><br><span class="line">        &quot;squizlabs/php_codesniffer&quot;: &quot;3.*&quot;,</span><br><span class="line">        &quot;phpcompatibility/php-compatibility&quot;: &quot;*&quot;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;prefer-stable&quot; : true,</span><br><span class="line">    &quot;scripts&quot;: &#123;</span><br><span class="line">        &quot;post-install-cmd&quot;: &quot;\&quot;vendor/bin/phpcs\&quot; --config-set installed_paths vendor/phpcompatibility/php-compatibility&quot;,</span><br><span class="line">        &quot;post-update-cmd&quot; : &quot;\&quot;vendor/bin/phpcs\&quot; --config-set installed_paths vendor/phpcompatibility/php-compatibility&quot;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="composer-update"><a href="#composer-update" class="headerlink" title="composer update"></a>composer update</h2><h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><pre><code>./vendor/bin/phpcs --standard=PHPCompatibility --runtime-set testVersion PHP版本 project_php --extensions=php --report=summary --report-file=/log_path
+</code></pre><h2 id="文档"><a href="#文档" class="headerlink" title="文档"></a>文档</h2><p><a href="https://github.com/PHPCompatibility/PHPCompatibility" target="_blank" rel="noopener">PHP版本的兼容性检查</a></p>
 ]]></content>
       <categories>
         <category>php</category>
@@ -64,6 +75,31 @@
       </categories>
       <tags>
         <tag>replace</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>session和token</title>
+    <url>/2021/05/06/session&amp;token/</url>
+    <content><![CDATA[<p><code>session</code> 和 <code>token</code> ,在我看来，没啥不同，都是一种客户端和服务端保持链接得一种解决方案，只不过 <code>session</code> 由服务器帮我解决好了，而 <code>token</code> 则需要自己来处理</p>
+<blockquote>
+<p>当然还是有区别的，比如 <code>session</code> 就要解决跨域等问题</p>
+</blockquote>
+<p><code>session</code> 更多的是，单机时代的一种解决方案，而 <code>token</code> 更适应现在的使用场景</p>
+<h2 id="session和cookie"><a href="#session和cookie" class="headerlink" title="session和cookie"></a>session和cookie</h2><p>一般来说 浏览器中的 <code>cookie</code> 中会存有 <code>session_id</code>，如果禁止 <code>cookie</code> 使用，可以在 <code>url</code> 链接中带有 <code>session_id</code></p>
+<h2 id="session分布式解决方案"><a href="#session分布式解决方案" class="headerlink" title="session分布式解决方案"></a>session分布式解决方案</h2><p>一般来说 <code>session</code> 都是保存在一台服务器的文件目录上，为了达到分布式效果，有几种方案。</p>
+<ul>
+<li><code>session</code> 目录共享，<code>oss</code> 或者挂载</li>
+<li>现在的大部分php框架，都支持不同的 <code>session</code>驱动，可以把 <code>file</code> 驱动，替换成 <code>redis</code>, 这样子就可以支持分布式了</li>
+<li><code>session</code> 保存到 <code>mysql</code> 中</li>
+</ul>
+<p>当然还有其他的方案，其中的效果和优缺点，只有实际使用才能真正知道了。</p>
+<h2 id="token的使用"><a href="#token的使用" class="headerlink" title="token的使用"></a>token的使用</h2><p>在 <code>restful</code>，前后端分离项目中，<code>token</code> 还是比较好用的，毕竟大部分的 <code>session</code>，还是依赖 <code>cookie</code>，而在app端没有 <code>cookie</code> 这个东西（存疑，毕竟我不了解app）， <code>token</code> 可以自定义的 <code>uuid</code>，也可以 <code>jwt</code>。</p>
+]]></content>
+      <categories>
+        <category>个人经验</category>
+      </categories>
+      <tags>
+        <tag>session,token</tag>
       </tags>
   </entry>
   <entry>
@@ -126,47 +162,6 @@
       </categories>
       <tags>
         <tag>vagrant</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>如何使用手机app进行pc登录</title>
-    <url>/2021/04/27/how_to_use_phone_login/</url>
-    <content><![CDATA[<p>提供一种通用的设计</p>
-<p>后端只需提供3个接口，分别是 getUuid,isLogin,loginByQrcode</p>
-<h2 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h2><p>pc端切换到二维码扫码界面时，请求getUuid接口, getUuid接口生成一个uuid,存入到redis中，可设置过期时间<br><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 伪代码</span></span><br><span class="line">$uuid = uniqid();</span><br><span class="line">redis-&gt;set($uuid, <span class="string">'login'</span>, <span class="number">60</span> * <span class="number">5</span>)</span><br></pre></td></tr></table></figure></p>
-<h2 id="第二步"><a href="#第二步" class="headerlink" title="第二步"></a>第二步</h2><p>PC前端一直轮询isLogin接口，isLogin接口判断uuid是否过期，判断是否uuid是否还未被二维码扫码，判断uuid的值是否已经跟token关联<br><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 伪代码</span></span><br><span class="line">$uuid = input(<span class="string">'uuid'</span>);</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">empty</span>($uuid)) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'参数错误'</span>;</span><br><span class="line">&#125;</span><br><span class="line">$token = redis-&gt;get($uuid);</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">empty</span>($token)) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'二维码超时'</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">if</span> ($token == <span class="string">'login'</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'手机还未扫码'</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">return</span> $token</span><br></pre></td></tr></table></figure></p>
-<h2 id="第三步"><a href="#第三步" class="headerlink" title="第三步"></a>第三步</h2><p>手机端已登录情况下扫码，获取到二维码的信息,即uuid,然后通过loginByQrcode接口，把token跟uuid信息关联到redis中<br><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 伪代码</span></span><br><span class="line">$uuid = input(<span class="string">'uuid'</span>);</span><br><span class="line">$token = input(<span class="string">'token'</span>);</span><br><span class="line"></span><br><span class="line">$uuid = redis-&gt;has($uuid);</span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">empty</span>($uuid)) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'二维码过期，请刷新页面'</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 获取用户信息</span></span><br><span class="line"></span><br><span class="line">redis-&gt;set($uuid, $token, <span class="number">60</span> * <span class="number">5</span>)</span><br></pre></td></tr></table></figure></p>
-]]></content>
-      <categories>
-        <category>业务方案</category>
-      </categories>
-      <tags>
-        <tag>login</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>session和token</title>
-    <url>/2021/05/06/session&amp;token/</url>
-    <content><![CDATA[<p><code>session</code> 和 <code>token</code> ,在我看来，没啥不同，都是一种客户端和服务端保持链接得一种解决方案，只不过 <code>session</code> 由服务器帮我解决好了，而 <code>token</code> 则需要自己来处理</p>
-<blockquote>
-<p>当然还是有区别的，比如 <code>session</code> 就要解决跨域等问题</p>
-</blockquote>
-<p><code>session</code> 更多的是，单机时代的一种解决方案，而 <code>token</code> 更适应现在的使用场景</p>
-<h2 id="session和cookie"><a href="#session和cookie" class="headerlink" title="session和cookie"></a>session和cookie</h2><p>一般来说 浏览器中的 <code>cookie</code> 中会存有 <code>session_id</code>，如果禁止 <code>cookie</code> 使用，可以在 <code>url</code> 链接中带有 <code>session_id</code></p>
-<h2 id="session分布式解决方案"><a href="#session分布式解决方案" class="headerlink" title="session分布式解决方案"></a>session分布式解决方案</h2><p>一般来说 <code>session</code> 都是保存在一台服务器的文件目录上，为了达到分布式效果，有几种方案。</p>
-<ul>
-<li><code>session</code> 目录共享，<code>oss</code> 或者挂载</li>
-<li>现在的大部分php框架，都支持不同的 <code>session</code>驱动，可以把 <code>file</code> 驱动，替换成 <code>redis</code>, 这样子就可以支持分布式了</li>
-<li><code>session</code> 保存到 <code>mysql</code> 中</li>
-</ul>
-<p>当然还有其他的方案，其中的效果和优缺点，只有实际使用才能真正知道了。</p>
-<h2 id="token的使用"><a href="#token的使用" class="headerlink" title="token的使用"></a>token的使用</h2><p>在 <code>restful</code>，前后端分离项目中，<code>token</code> 还是比较好用的，毕竟大部分的 <code>session</code>，还是依赖 <code>cookie</code>，而在app端没有 <code>cookie</code> 这个东西（存疑，毕竟我不了解app）， <code>token</code> 可以自定义的 <code>uuid</code>，也可以 <code>jwt</code>。</p>
-]]></content>
-      <categories>
-        <category>个人经验</category>
-      </categories>
-      <tags>
-        <tag>session,token</tag>
       </tags>
   </entry>
 </search>
